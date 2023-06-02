@@ -1,0 +1,7 @@
+﻿@model Lab.Todo.Web.Models.AttachmentCreateModel
+
+<form enctype="multipart/form-data" asp-controller="Attachments" asp-action="Upload" method="post">
+    <input type="file" name="File" />
+    <div>@Html.ValidationMessageFor(model => model.File)</div>
+    <button type="submit">Upload</button>
+</form>

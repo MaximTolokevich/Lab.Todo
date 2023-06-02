@@ -1,0 +1,29 @@
+﻿@model StatusViewModel
+
+<div>Status</div>
+
+<div class="dropdown m-2">
+    <button id="statusButton" name="Status" class="btn btn-outline-info btn-sm dropdown-toggle" type="button" data-toggle="dropdown"
+            style="color:black">
+        @Model.CurrentStatus
+    </button>
+    <ul class="dropdown-menu" id="statusSuggestions">
+        @foreach (var status in Model.StatusSuggestions)
+        {
+            <li><a class="dropdown-item" href="javascript: void (0)" onclick="handleStatusClick()">@status</a></li>
+        }
+    </ul>
+</div>
+
+<div>
+    <input id="statusInput" type="hidden" class="form-control" name="status" value=@Model.CurrentStatus />
+</div>
+
+<script>
+    function handleStatusClick() {
+        let newStatus = event.target.textContent;
+        document.getElementById("statusButton").textContent = newStatus;
+        let inputElement = document.getElementById("statusInput");
+        inputElement.setAttribute("value", newStatus);
+    }
+</script>

@@ -1,0 +1,16 @@
+﻿@model Lab.Todo.Web.Models.ToDoItemCreateModel
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "_Layout";
+}
+
+<h2>Create ToDoItem</h2>
+
+@{
+    await Html.RenderPartialAsync("_CreateForm", Model);
+}
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

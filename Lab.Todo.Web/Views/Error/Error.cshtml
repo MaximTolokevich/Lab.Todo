@@ -1,0 +1,31 @@
+﻿@model ErrorViewModel
+<html>
+<head></head>
+    <body>
+    <h1 align="center">An error occurred!</h1>
+
+    <p style="color: red; font-weight: bold">Error information:</p>
+    <p><b>Request path:</b> @Model.RequestPath</p>
+    <p><b>Trace identifier:</b> @Model.TraceIdentifier</p>
+    @{
+        var lastException = Model.ExceptionModels.LastOrDefault();
+        foreach (var item in Model.ExceptionModels)
+        {
+            <p><b>Exception message:</b> @item.Message</p>
+            <p><b>Exception type:</b> @item.Type</p>
+            if (!string.IsNullOrWhiteSpace(item.Data))
+            {
+                <p><b>Exception data:</b> @item.Data</p>
+            }
+            if (item.StackTrace is not null)
+            {
+                <p><b>Exception stack trace:</b> @Html.Raw(item.StackTrace)</p>
+            }
+            if (!item.Equals(lastException))
+            {
+                <hr/>
+            }
+        }
+    }
+    </body>
+</html>

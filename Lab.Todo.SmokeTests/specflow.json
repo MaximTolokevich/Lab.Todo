@@ -1,0 +1,11 @@
+{
+  "DatabaseOptions": {
+    "ConnectionString": "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=ToDoDatabase;Integrated Security=True"
+  },
+
+  "HttpOptions": {
+    "BaseAddress": "https://localhost:5001"
+  },
+
+  "Username": "User"
+}

@@ -1,0 +1,67 @@
+﻿@model TaskListViewModel
+
+@{
+    ViewBag.Title = "ToDoTasks";
+    Layout = "_Layout";
+}
+
+<h2>List of ToDoItems</h2>
+
+<div class="page-grid">
+    <div>
+        @{
+            await Html.RenderPartialAsync("FiltersViews/_FiltersForm", new ToDoItemSearchModel { AllStatuses = Model.AllStatuses });
+        }
+    </div>
+
+    <div class="items">
+        <table class="table">
+            <tr>
+                <th>@Html.DisplayNameFor(model => model.AllTasks.FirstOrDefault().Title)</th>
+                <th>@Html.DisplayNameFor(model => model.AllTasks.FirstOrDefault().Description)</th>
+                <th>Tags</th>
+                <th>@Html.DisplayNameFor(model => model.AllTasks.FirstOrDefault().DependsOnItems)</th>
+                <th>@Html.DisplayNameFor(model => model.AllTasks.FirstOrDefault().Status)</th>
+                <th>@Html.DisplayNameFor(model => model.AllTasks.FirstOrDefault().ActualStartTime)</th>
+                <th>@Html.DisplayNameFor(model => model.AllTasks.FirstOrDefault().ActualEndTime)</th>
+                <th>@Html.DisplayNameFor(model => model.AllTasks.FirstOrDefault().Duration)</th>
+                <th>@Html.DisplayNameFor(model => model.AllTasks.FirstOrDefault().Deadline)</th>
+                <th>ParentId</th>
+                <th>Options</th>
+            </tr>
+            @foreach (var item in Model.AllTasks)
+            {
+        <tr>
+            <td>@Html.DisplayName(item.Title)</td>
+            <td>@Html.DisplayName(item.Description)</td>
+            <td>
+                @foreach (string tag in item.Tags)
+                {
+                    <div>@tag</div>
+                }
+            </td>
+            <td>
+                @foreach (string dependency in item.DependsOnItems)
+                {
+                    <div>@dependency</div>
+                }
+            </td>
+            <td>@Html.DisplayName(item.Status)</td>
+            <td>@Html.DisplayName(item.ActualStartTime.ToString())</td>
+            <td>@Html.DisplayName(item.ActualEndTime.ToString())</td>
+            <td>@Html.DisplayName(item.Duration.ToString())</td>
+            <td>@Html.DisplayName(item.Deadline.ToString())</td>
+            <td>@Html.DisplayName(item.ParentTask?.Id.ToString())</td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", "ToDoItems", new { id = item.Id }, null)
+                <form asp-controller="ToDoItems" asp-action="Delete" asp-route-id="@item.Id" method="post">
+                    <button class="btn btn-danger" type="submit">Delete</button>
+                </form>
+            </td>
+        </tr>
+            }
+        </table>
+        <br />
+        @Html.ActionLink("Add new...", "Add", "ToDoItems")
+    </div>
+</div>

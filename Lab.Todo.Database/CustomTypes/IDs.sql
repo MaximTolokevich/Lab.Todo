@@ -1,0 +1,4 @@
+﻿CREATE TYPE [dbo].[IDs] AS TABLE
+(
+	[Id] INT PRIMARY KEY NOT NULL
+)

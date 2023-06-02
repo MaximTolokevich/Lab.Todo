@@ -1,0 +1,16 @@
+﻿@model Lab.Todo.Web.Models.ToDoItemUpdateModel
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "_Layout";
+}
+
+<h2>Edit ToDoItem</h2>
+
+@{
+    await Html.RenderPartialAsync("_UpdateForm", Model);
+}
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

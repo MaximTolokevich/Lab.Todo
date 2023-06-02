@@ -1,0 +1,46 @@
+﻿@model ToDoItemSearchModel
+
+@{
+    Layout = "";
+}
+
+<form class="filter-form" method="post">
+    <div class="mt-2">
+        @Html.DisplayNameFor(model => model.Title)
+        <input name="title" id="title" />
+    </div>
+
+    <div class="mt-2">
+        @Html.DisplayNameFor(model => model.Description)
+        <input name="description" id="description" />
+    </div>
+
+    <div class="mt-2">
+        <label>ActualStartTime:</label><br>
+        <input type="datetime-local" name="actualStartTimeFrom"> - <input type="datetime-local" name="actualStartTimeTo">
+    </div>
+
+    <div class="mt-2">
+        <label>ActualEndTime:</label><br>
+        <input type="datetime-local" name="actualEndTimeFrom"> - <input type="datetime-local" name="actualEndTimeTo">
+    </div>
+
+    <div class="mt-2">
+        <label>Duration:</label>
+        <input type="time" name="durationFrom"> - <input type="time" name="durationTo">
+    </div>
+
+    <div class="mt-2">
+        <label>Deadline:</label>
+        <input type="datetime-local" name="deadlineFrom"> - <input type="datetime-local" name="deadlineTo">
+    </div>
+    
+    <div class="mt-2">
+        <label>PlannedStartTime:</label>
+        <input type="datetime-local" name="plannedStartTimeFrom"> - <input type="datetime-local" name="plannedStartTimeTo">
+    </div>
+
+    <div class="mt-2">
+        <button type="submit" class="btn btn-primary">Filter</button>
+    </div>
+</form>

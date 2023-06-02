@@ -1,0 +1,112 @@
+﻿@model TagViewModel
+
+<div>Tags</div>
+
+<div class="dropdown mt-2">
+    <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false"
+            onclick="handleTagsDropdownClick()">
+        Tag suggestions
+    </button>
+    <ul class="dropdown-menu" id="tagSuggestions">
+        <li><h6 class="dropdown-header">Predefined tags</h6></li>
+        @foreach (var tagSuggestion in Model.PredefinedTagSuggestions)
+        {
+            <li><a class="dropdown-item" href="#" onclick="handleTagSuggestionClick()">@tagSuggestion.Value</a></li>
+        }
+
+        <li><hr class=@(Model.NotPredefinedTagSuggestions.Any() ? "dropdown-divider" : "hidden")></li>
+        <li><h6 class=@(Model.NotPredefinedTagSuggestions.Any() ? "dropdown-header" : "hidden")>Your tags</h6></li>
+
+        @foreach (var tagSuggestion in Model.NotPredefinedTagSuggestions)
+        {
+            <li><a class="dropdown-item" href="#" onclick="handleTagSuggestionClick()">@tagSuggestion.Value</a></li>
+        }
+    </ul>
+</div>
+
+<div id="tags">
+    @foreach (var tag in Model.Tags ?? new List<string>())
+    {
+        <div class="input-group col-lg-4 col-md-6 p-0 mt-2")>
+            <input type="text" maxlength="10" class="form-control" name="TagViewModel.Tags" value=@tag />
+            <div class="input-group-append">
+                <button class="btn btn-danger" type="button" onclick="removeTag()">Delete tag</button>
+            </div>
+        </div>
+    }
+</div>
+
+<button class="btn btn-info mt-2" type="button" id="addTagButton" onclick="addTag(null)">Add tag</button>
+
+<script>
+    function handleTagsDropdownClick() {
+        if (event.target.getAttribute("aria-expanded") === "false") {
+            prepareTagSuggestions();
+        }
+    }
+
+    function prepareTagSuggestions() {
+        let tagSuggestions = document.getElementById("tagSuggestions").getElementsByTagName("a");
+        let tags = document.getElementById("tags").getElementsByTagName("input");
+
+        for (let tagSuggestion of tagSuggestions) {
+            if ([...tags].some(tag => tag.value.trim().toLowerCase() === tagSuggestion.textContent.toLowerCase())) {
+                tagSuggestion.classList.add("hidden");
+            }
+            else {
+                tagSuggestion.classList.remove("hidden");
+            }
+        }
+    }
+
+    function handleTagSuggestionClick() {
+        addTag(event.target.textContent);
+        event.target.classList.add("hidden");
+        event.stopPropagation();
+    }
+
+    function addTag(tagValue) {
+        let tagsContainer = document.getElementById("tags");
+
+        let tagContainer = document.createElement("div");
+        tagContainer.className = "input-group col-lg-4 col-md-6 p-0 mt-2";
+
+        let tagInput = document.createElement("input");
+        tagInput.type = "text";
+        tagInput.maxLength = 10;
+        tagInput.className = "form-control";
+        tagInput.name = "TagViewModel.Tags";
+        tagInput.value = tagValue;
+        let deleteTagButtonWrapper = document.createElement("div");
+        deleteTagButtonWrapper.className = "input-group-append";
+
+        let deleteTagButton = document.createElement("button");
+        deleteTagButton.type = "button";
+        deleteTagButton.className = "btn btn-danger";
+        deleteTagButton.textContent = "Delete tag";
+        deleteTagButton.onclick = removeTag;
+
+        deleteTagButtonWrapper.append(deleteTagButton);
+        tagContainer.append(tagInput, deleteTagButtonWrapper);
+        tagsContainer.append(tagContainer);
+
+        if (tagsContainer.childElementCount === 10) {
+            document.getElementById("addTagButton").disabled = true;
+            toggleTagSuggestionsDisability();
+        }
+    }
+
+    function removeTag() {
+        event.target.parentNode.parentNode.remove();
+
+        if (document.getElementById("tags").childElementCount === 9) {
+            document.getElementById("addTagButton").disabled = false;
+            toggleTagSuggestionsDisability();
+        }
+    }
+
+    function toggleTagSuggestionsDisability() {
+        let tagSuggestions = document.getElementById("tagSuggestions").getElementsByTagName("a");
+        [...tagSuggestions].forEach(tagSuggestion => tagSuggestion.classList.toggle("disabled"));
+    }
+</script>

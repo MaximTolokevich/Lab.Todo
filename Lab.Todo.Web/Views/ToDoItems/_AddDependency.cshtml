@@ -1,0 +1,41 @@
+﻿@using System.Linq;
+@model ToDoItemAddDependencyViewModel
+
+<div class="mt-2" name="DependencyViewModel">
+    <label class="form-check-label">@(Model.HasAvailableDependencies ? "Available Dependencies" : "No Dependencies Available Now")</label>
+    <br />
+    <select multiple name="DependencyViewModel.DependsOnItems" class="form-select @(Model.HasAvailableDependencies ? "" : "hidden")">
+        @foreach (var dependency in Model.AvailableDependencies)
+        {
+            if (Model.DependsOnItems.Contains(dependency.ToDoItemId))
+            {
+                if (Model.CyclicDependencies?.Any(cyclicDependency => cyclicDependency.Source.ToDoItemId == dependency.ToDoItemId) is true)
+                {
+                    <option class="bg-danger" value="@dependency.ToDoItemId">@dependency.Title</option>
+                }
+                else
+                {
+                    <option value="@dependency.ToDoItemId" selected>@dependency.Title</option>
+                }
+            }
+            else
+            {
+                <option value="@dependency.ToDoItemId">@dependency.Title</option>
+            }
+        }
+    </select>
+</div>
+
+@if (Model.CyclicDependencies?.Any() is true)
+{
+    <div class="text-danger">Detected cyclic dependencies</div>
+
+    foreach (var cyclicDependency in Model.CyclicDependencies)
+    {
+        <div class="text-danger">
+            Adding @Html.ActionLink(cyclicDependency.Source.Title, "Edit", "ToDoItems", new { id = cyclicDependency.Source.ToDoItemId }) creates cycle:
+            @Html.Raw(string.Join(" -> ", cyclicDependency.Cycle
+                .Select(dependency => $"<a href=\"{Url.Action("Edit", "ToDoItems", new { id = dependency.ToDoItemId })}\">{dependency.Title}</a>")))
+        </div>
+    }
+}
